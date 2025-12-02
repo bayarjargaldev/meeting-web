@@ -9,25 +9,21 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       baseURL: API_URL,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       timeout: 10000,
+      withCredentials: false,
     });
 
-    this.client.interceptors.request.use(
-      (config) => {
-        const token = useAuthStore.getState().token;
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error),
-    );
+    // attach JWT automatically
+    this.client.interceptors.request.use((config) => {
+      const token = useAuthStore.getState().token;
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
 
+    // remove invalid token
     this.client.interceptors.response.use(
-      (response) => response,
+      (res) => res,
       (error: AxiosError) => {
         if (error.response?.status === 401) {
           useAuthStore.getState().logout();
@@ -38,23 +34,19 @@ class ApiClient {
   }
 
   async get<T>(url: string, params?: any): Promise<T> {
-    const res = await this.client.get<T>(url, { params });
-    return res.data;
+    return (await this.client.get<T>(url, { params })).data;
   }
 
   async post<T>(url: string, data?: any): Promise<T> {
-    const res = await this.client.post<T>(url, data);
-    return res.data;
+    return (await this.client.post<T>(url, data)).data;
   }
 
   async put<T>(url: string, data?: any): Promise<T> {
-    const res = await this.client.put<T>(url, data);
-    return res.data;
+    return (await this.client.put<T>(url, data)).data;
   }
 
   async delete<T>(url: string): Promise<T> {
-    const res = await this.client.delete<T>(url);
-    return res.data;
+    return (await this.client.delete<T>(url)).data;
   }
 }
 
