@@ -1,26 +1,31 @@
-FROM node:20
- 
-ENV TZ="Asia/Ulaanbaatar"
+FROM node:20-slim
  
 WORKDIR /app
  
-RUN apt-get update && apt-get install -y procps
- 
-RUN rm -rf node_modules/
- 
 COPY . .
  
-RUN npm install
+ARG CI_COMMIT_SHA
+ENV CI_COMMIT_SHA=$CI_COMMIT_SHA
  
-RUN npm run build
+RUN ls
+RUN rm -rf node_modules/
+RUN rm -rf .next/
+RUN npm cache clean --force
+RUN ls
  
-# RUN chgrp -R 0 /app && chmod -R g+rwX /app
- 
-# USER 1001
- 
-EXPOSE 3000
+# CMD export -p
  
 ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
  
-CMD npm run $NODE_ENV
+RUN npm install --force
+ 
+RUN npm run $NODE_ENV
+ 
+RUN chgrp -R 0 /app && chmod -R g+rwX /app
+ 
+USER 1001
+ 
+EXPOSE 3000
+ 
+CMD npm run start
