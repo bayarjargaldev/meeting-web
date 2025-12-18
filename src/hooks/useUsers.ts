@@ -1,24 +1,33 @@
-import { useQuery } from "@tanstack/react-query";
-import { usersApi } from "../api/users";
+import { useState } from "react";
+import apiClient from "../api/client";
 
-export const useSearchEmployees = (query: string, group?: string) =>
-  useQuery({
-    queryKey: ["employees", "search", query, group],
-    queryFn: () => usersApi.searchEmployees(query, group),
-    enabled: query.length >= 2,
-    staleTime: 1000 * 60 * 5,
-  });
+interface SearchUsersResponse {
+  users: any[];
+}
 
-export const useGroups = () =>
-  useQuery({
-    queryKey: ["groups"],
-    queryFn: usersApi.getGroups,
-    staleTime: 1000 * 60 * 30,
-  });
+export function useUsers() {
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-export const useCurrentUser = () =>
-  useQuery({
-    queryKey: ["user", "me"],
-    queryFn: usersApi.getMe,
-    staleTime: 1000 * 60 * 10,
-  });
+  const searchUsers = async (q: string) => {
+    if (!q || q.length < 2) {
+      setUsers([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await apiClient.get<SearchUsersResponse>("/users/search", {
+        q,
+      });
+
+      setUsers(res.users);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { users, loading, searchUsers };
+}
+
+export default useUsers;

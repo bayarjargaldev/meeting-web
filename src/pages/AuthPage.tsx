@@ -9,6 +9,11 @@ const AuthPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (import.meta.env.VITE_MOCK_AUTH === "true") {
+      navigate("/meetings");
+      return;
+    }
+
     const run = async () => {
       const url = new URL(window.location.href);
       const tokenId = url.searchParams.get("tokenid");
