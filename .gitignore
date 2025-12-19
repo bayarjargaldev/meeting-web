@@ -1,25 +1,22 @@
-# Logs
-logs
-*.log
+# ============================================
+# CRITICAL: Environment Variables - NEVER COMMIT
+# ============================================
+.env
+.env.*
+!.env.example
+
+# Secure files
+.env.production
+.env.staging
+dist/
+node_modules/
+.vscode/
+.idea/
+.DS_Store
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.env*
+# ... rest of your existing .gitignore stays the same

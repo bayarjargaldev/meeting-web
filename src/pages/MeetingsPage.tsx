@@ -10,7 +10,13 @@ import { useNavigate } from "react-router-dom";
 
 type ViewMode = "calendar" | "list";
 
-const getDateKey = (d: Date) => d.toISOString().slice(0, 10);
+// ✅ FIX: Use local date strings instead of ISO (UTC) strings
+const getDateKey = (d: Date) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
 const endOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth() + 1, 0);
@@ -50,7 +56,9 @@ const MeetingsPage: React.FC = () => {
   const meetingsByDay = useMemo(() => {
     const map: Record<string, any[]> = {};
     meetings.forEach((m) => {
-      const key = getDateKey(new Date(m.start));
+      // ✅ FIX: Convert UTC time to local date for grouping
+      const localDate = new Date(m.start);
+      const key = getDateKey(localDate);
       if (!map[key]) map[key] = [];
       map[key].push(m);
     });
@@ -68,10 +76,10 @@ const MeetingsPage: React.FC = () => {
         <header className="mb-6">
           <p className="text-xs text-indigo-500 font-medium">Токи задгай</p>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Хуралаа сонгоорой
+            Миний Хуралууд
           </h1>
           {user && (
-            <p className="text-xs text-slate-400 mt-1">нэвтэрсэн {user.name}</p>
+            <p className="text-xs text-slate-400 mt-1">Сайнуу {user.name}</p>
           )}
         </header>
 
@@ -208,20 +216,27 @@ const MeetingsPage: React.FC = () => {
                     if (isNaN(d.getTime())) return <div key={i} />;
                     const key = getDateKey(d);
                     const hasMeetings = !!meetingsByDay[key];
+                    const isToday = key === today;
 
                     return (
                       <button
                         key={i}
                         onClick={() => setSelectedDate(d)}
-                        className={`aspect-square rounded-xl text-xs flex flex-col items-center justify-center ${
+                        className={`aspect-square rounded-xl text-xs flex flex-col items-center justify-center relative ${
                           key === selectedKey
                             ? "bg-indigo-600 text-white"
+                            : isToday
+                            ? "bg-indigo-50 text-indigo-700 font-semibold"
                             : "bg-slate-50"
                         }`}
                       >
                         <span>{d.getDate()}</span>
                         {hasMeetings && (
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-indigo-400" />
+                          <span
+                            className={`mt-1 h-1.5 w-1.5 rounded-full ${
+                              key === selectedKey ? "bg-white" : "bg-indigo-400"
+                            }`}
+                          />
                         )}
                       </button>
                     );
@@ -239,7 +254,7 @@ const MeetingsPage: React.FC = () => {
 
                 {meetingsForSelectedDay.length === 0 ? (
                   <p className="text-slate-400 text-sm">
-                    Танд товолсон хурал байхгүй байна.
+                    Танд товологдсон хурал байхгүй байна.
                   </p>
                 ) : (
                   <div className="space-y-4">
