@@ -22,9 +22,9 @@ RUN npm install --force
  
 RUN npm run $NODE_ENV
  
-RUN chgrp -R 0 /app && chmod -R g+rwX /app
+#RUN chgrp -R 0 /app && chmod -R g+rwX /app
  
-USER 1001
+#USER 1001
  
 EXPOSE 3000
  

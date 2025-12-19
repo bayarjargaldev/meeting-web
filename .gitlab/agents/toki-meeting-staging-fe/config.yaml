@@ -1,0 +1,9 @@
+ci_access:
+  projects:
+    - id: household/service/toki-meeting/frontend
+
+user_access:
+  access_as:
+    agent: {}
+  projects:
+    - id: household/service/toki-meeting/frontend

@@ -1,0 +1,30 @@
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+
+ingress:
+  enabled: false
+  
+hpa:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 5
+
+service:
+  enabled: true
+  externalPort: 3000
+  internalPort: 3000
+
+livenessProbe:
+  probeType: "exec"
+  initialDelaySeconds: 10
+  timeoutSeconds: 10
+  command: ["ls"]
+
+readinessProbe:
+  probeType: "exec"
+  initialDelaySeconds: 10
+  timeoutSeconds: 10
+  command: ["ls"]
