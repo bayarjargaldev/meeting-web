@@ -28,7 +28,7 @@ staging:
     STAGING_ENABLED: "true"
   environment:
     name: toki-meeting-staging-fe
-    url: "https://staging-train-fe.toki.mn/"
+    url: "https://staging-meeting.toki.mn/"
   rules:
     - if: "($CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH)"
 
@@ -38,9 +38,8 @@ production:
     REPLICAS: 2
   environment:
     name: toki-meeting-production-fe
-    url: "https://train-fe.toki.mn/"
+    url: "https://meeting.toki.mn/"
   when: manual
-
 variables:
   KUBE_NAMESPACE: "meeting"
   SECURE_FILES_DOWNLOAD_PATH: "./"

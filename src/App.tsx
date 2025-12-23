@@ -8,17 +8,17 @@ import CreateMeetingPage from "./pages/CreateMeetingPage";
 const App: React.FC = () => {
   return (
     <Routes>
-      {/* Auth / entry */}
+      {/* Auth hiih uy bolon entry heseg roo route */}
       <Route path="/" element={<AuthPage />} />
 
-      {/* Main app */}
+      {/* Home screen page */}
       <Route path="/meetings" element={<MeetingsPage />} />
       <Route path="/create" element={<CreateMeetingPage />} />
 
-      {/* Errors */}
+      {/* aldaa garah uyd route hiih page */}
       <Route path="/no-permission" element={<NoPermissionPage />} />
 
-      {/* Catch-all MUST be last */}
+      {/* suulihiig ni catch hiih */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
