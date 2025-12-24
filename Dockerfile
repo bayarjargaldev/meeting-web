@@ -35,8 +35,8 @@ RUN npm ci
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 3000
+EXPOSE 3000
 
 # Start the application
 CMD ["npm", "start"]
