@@ -6,10 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "start": "vite preview --host 0.0.0.0 --port 8080",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "staging": "cp .env.staging .env.local && next build",
-    "prod": "cp .env.production .env.local && next build"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.11",
