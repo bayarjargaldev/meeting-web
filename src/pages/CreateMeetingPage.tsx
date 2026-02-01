@@ -115,7 +115,7 @@ const CreateMeetingPage: React.FC = () => {
                   "HH:mm",
                 )}`}
             </p>
-            <p>{participants.length} participants</p>
+            <p>{participants.length} Оролцогч</p>
           </div>
 
           <button

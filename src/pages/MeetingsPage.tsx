@@ -104,7 +104,7 @@ const MeetingsPage: React.FC = () => {
             </div>
 
             <div className="bg-slate-100 p-1 rounded-full flex">
-              {["calendar", "list"].map((v) => (
+              {["Календар", "Жагсаалт"].map((v) => (
                 <button
                   key={v}
                   onClick={() => setViewMode(v as ViewMode)}
@@ -173,7 +173,7 @@ const MeetingsPage: React.FC = () => {
               <>
                 {meetings.length === 0 ? (
                   <p className="text-center text-slate-400 py-12">
-                    No meetings scheduled ✨
+                    Одоогоор хурал байхгүй байна.
                   </p>
                 ) : (
                   <div className="space-y-4">
@@ -226,8 +226,8 @@ const MeetingsPage: React.FC = () => {
                           key === selectedKey
                             ? "bg-indigo-600 text-white"
                             : isToday
-                            ? "bg-indigo-50 text-indigo-700 font-semibold"
-                            : "bg-slate-50"
+                              ? "bg-indigo-50 text-indigo-700 font-semibold"
+                              : "bg-slate-50"
                         }`}
                       >
                         <span>{d.getDate()}</span>

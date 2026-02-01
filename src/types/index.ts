@@ -9,7 +9,7 @@ export interface User {
   department?: string;
   subDepartment?: string;
 
-  groups?: string[]; // keep for backward compatibility
+  groups?: string[];
   isTokiEmployee: boolean;
 
   profilePicUrl?: string;
